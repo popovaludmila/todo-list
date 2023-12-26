@@ -1,4 +1,4 @@
-.wrapper {
+.form {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -58,6 +58,7 @@
   padding-left: 5px;
 }
 .input_date{
+    min-width: 170px;
     height: 100%;
 }
 
