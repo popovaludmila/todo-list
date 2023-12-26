@@ -1,0 +1,12 @@
+.inner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.title {
+    margin-bottom: 30px;
+    font-size: 40px;
+    color:chocolate;
+}
