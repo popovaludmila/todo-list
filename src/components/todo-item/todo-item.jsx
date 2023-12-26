@@ -1,16 +1,53 @@
+import { useState } from "react";
 import styles from "./todo-item.module.css";
 
-export const TodoItem = () => {
+export const TodoItem = ({ item, changeStatus, deleteTask }) => {
+  const { id, name, createTime, deadlineTime, description } = item;
+  const [isShow, setIsShow] = useState(false);
+
+  const showDescription = () => {
+    setIsShow(!isShow);
+  };
+
   return (
     <li className={styles.item}>
-      <input className={`${styles.checkbox} visually-hidden`} type="checkbox" name="" id="" checked={true} />
       <div className={styles.content}>
         <div className={styles.info}>
-          <p className={styles.name}>Планирую</p>
-          <span className={`${styles.time} ${styles.time_created}`}>05.03.2023</span>
-          <span className={`${styles.time}`}>05.08.2023</span>
+          <input
+            className={`${styles.checkbox} visually-hidden`}
+            type="checkbox"
+            defaultChecked={item.done}
+          />
+          <div className={styles.name_wrap} onClick={() => changeStatus(id)}>
+            <p className={styles.name}>{name}</p>
+
+            <span className={`${styles.time}`}>{createTime}</span>
+          </div>
+          {description !== "" && (
+            <button
+              className={isShow ? `${styles.btn} ${styles.btn_desc} ${styles.rotate} `: `${styles.btn} ${styles.btn_desc} `}
+              onClick={showDescription}
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M8 11.89l-1.414-1.415-4.95-4.95L3.05 4.111 8 9.06l4.95-4.95 1.414 1.414-4.95 4.95L8 11.889z"
+                  fill="#000"
+                ></path>
+              </svg>
+            </button>
+          )}
+          <span className={`${styles.time} ${styles.time_deadline}`}>
+            {deadlineTime}
+          </span>
         </div>
-        <button className={`${styles.btn}`}>
+        <button className={`${styles.btn} ${styles.btn_edit}`}>
           <svg
             width="24"
             height="24"
@@ -25,7 +62,10 @@ export const TodoItem = () => {
             ></path>
           </svg>
         </button>
-        <button className={`${styles.btn}`}>
+        <button
+          className={`${styles.btn} ${styles.btn_del}`}
+          onClick={() => deleteTask(id)}
+        >
           <svg
             width="24"
             height="24"
@@ -36,11 +76,12 @@ export const TodoItem = () => {
               fillRule="evenodd"
               clipRule="evenodd"
               d="M6.999.992h2l1 1.002h3V4h-10V1.994h3l1-1.002zm-3 4.01h8v8.99a1 1 0 01-1 1h-6a1 1 0 01-1-1v-8.99z"
-              fill="#222"
+              fill="#337"
             ></path>
           </svg>
         </button>
       </div>
+      {isShow && <p className={styles.description}>{description}</p>}
     </li>
   );
 };

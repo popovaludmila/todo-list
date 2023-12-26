@@ -24,18 +24,22 @@ export const Header = ({addTodo}) => {
   };
 
   const saveItem = () => {
-    const item = {
-      id: uuidv4(),
-      createTime: new Date().toLocaleString(),
-      name: form.name,
-      deadlineTime: form.time,
-      deadlineDate: form.date,
-      description: form.description,
-      done: false
-    };
-    addTodo(item);
-    localStorage.setItem(`${item.id}`, JSON.stringify(item));
-    resetValue();
+    if(form.name !== "" && form.date!=="" && form.time !== "") {
+      const item = {
+        id: uuidv4(),
+        createTime: new Date().toLocaleString(),
+        name: form.name,
+        deadlineTime: `${form.date} ${form.time}`,
+        description: form.description,
+        done: false
+      };
+      addTodo(item);
+   
+      resetValue();
+    } else {
+      console.log("Заполните данные")
+    }
+
   };
 
   return (
