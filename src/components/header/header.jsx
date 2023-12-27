@@ -3,6 +3,7 @@ import styles from "./header.module.css";
 import { v4 as uuidv4 } from "uuid";
 
 export const Header = ({addTodo}) => {
+
   const [form, setValue] = useState({
     name: "",
     time: "",
@@ -25,11 +26,19 @@ export const Header = ({addTodo}) => {
 
   const saveItem = () => {
     if(form.name !== "" && form.date!=="" && form.time !== "") {
+      const arrDate = `${form.date.split('-').reverse().join('.')}`;
+      console.log(arrDate);
       const item = {
         id: uuidv4(),
-        createTime: new Date().toLocaleString(),
+        createTime: new Date().toLocaleString([], {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
         name: form.name,
-        deadlineTime: `${form.date} ${form.time}`,
+        deadlineTime: `${arrDate} ${form.time}`,
         description: form.description,
         done: false
       };
