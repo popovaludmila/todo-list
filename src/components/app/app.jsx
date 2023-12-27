@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "../header/header";
 import styles from "./app.module.css";
 import { TodoItem } from "../todo-item/todo-item";
 import { v4 as uuidv4 } from "uuid";
 
 export const App = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(
+    JSON.parse(localStorage.getItem("todos")) || []
+  );
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const addTodo = (todo) => {
     setTodos((todos) => [...todos, todo]);
-    localStorage.setItem(`${todo.id}`, JSON.stringify(todo));
   };
 
   const changeStatus = (id) => {
@@ -30,6 +35,23 @@ export const App = () => {
     });
   };
 
+  const updateTask = (id, name, decription, deadlineTime) => {
+    setTodos((todos) => {
+      return todos.map((todo) => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            name: name,
+            decription: decription,
+            deadlineTime: deadlineTime,
+          };
+        }
+
+        return todo;
+      });
+    });
+  };
+
   return (
     <div className="container">
       <div className={styles.inner}>
@@ -45,6 +67,7 @@ export const App = () => {
                   key={uuidv4()}
                   changeStatus={changeStatus}
                   deleteTask={deleteItem}
+                  updateTask={updateTask}
                 />
               );
             })}

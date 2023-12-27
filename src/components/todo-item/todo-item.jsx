@@ -1,53 +1,131 @@
 import { useState } from "react";
 import styles from "./todo-item.module.css";
 
-export const TodoItem = ({ item, changeStatus, deleteTask }) => {
+export const TodoItem = ({ item, changeStatus, deleteTask, updateTask }) => {
   const { id, name, createTime, deadlineTime, description } = item;
   const [isShow, setIsShow] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const [form, setValue] = useState({
+    name: name,
+    deadlineTime: deadlineTime,
+    description: description,
+  });
 
   const showDescription = () => {
     setIsShow(!isShow);
   };
 
+  const onChange = (e) => {
+    setValue({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const editTask= () => {
+    setIsEdit(!isEdit);
+  };
+
+  const saveTask = () => {
+    if (form.name !== "" && form.deadlineTime !== "") {
+        updateTask(id, form.name, form.description, form.deadlineTime)
+    }
+    setIsEdit(false);
+  };
+
   return (
     <li className={styles.item}>
       <div className={styles.content}>
-        <div className={styles.info}>
+        <label className={styles.checkbox_wrapper}>
           <input
-            className={`${styles.checkbox} visually-hidden`}
+            onClick={() => changeStatus(id)}
+            className={`${styles.checkbox}`}
             type="checkbox"
             defaultChecked={item.done}
           />
-          <div className={styles.name_wrap} onClick={() => changeStatus(id)}>
-            <p className={styles.name}>{name}</p>
-
-            <span className={`${styles.time}`}>{createTime}</span>
-          </div>
-          {description !== "" && (
-            <button
-              className={isShow ? `${styles.btn} ${styles.btn_desc} ${styles.rotate} `: `${styles.btn} ${styles.btn_desc} `}
-              onClick={showDescription}
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 16 16"
-                xmlns="http://www.w3.org/2000/svg"
+        </label>
+        {isEdit ? (
+          <form className={styles.info}>
+            <div className={styles.name_wrap}>
+              <input
+                className={`${styles.name}`}
+                value={form.name}
+                type="text"
+                name="name"
+                onChange={onChange}
+              />
+              <span className={`${styles.time}`}>
+                Дата создания:{createTime}
+              </span>
+            </div>
+            <span className={`${styles.time} ${styles.time_deadline}`}>
+              до &nbsp;{" "}
+            </span>
+            <input
+              type="text"
+              name="deadlineTime"
+              onChange={onChange}
+              value={form.deadlineTime}
+            />
+            {description !== "" && (
+              <textarea
+                rows={1}
+                className={`${styles.description} ${styles.description_wrap}`}
+                value={form.description}
+                name="description"
+                onChange={onChange}
               >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M8 11.89l-1.414-1.415-4.95-4.95L3.05 4.111 8 9.06l4.95-4.95 1.414 1.414-4.95 4.95L8 11.889z"
-                  fill="#000"
-                ></path>
-              </svg>
-            </button>
-          )}
-          <span className={`${styles.time} ${styles.time_deadline}`}>
-            {deadlineTime}
-          </span>
-        </div>
-        <button className={`${styles.btn} ${styles.btn_edit}`}>
+                
+              </textarea>
+            )}
+          </form>
+        ) : (
+          <div className={styles.info}>
+            <div className={styles.name_wrap}>
+              <p
+                className={
+                  item.done
+                    ? `${styles.name} ${styles.through}`
+                    : `${styles.name}`
+                }
+              >
+                {name}
+              </p>
+              <span className={`${styles.time}`}>
+                Дата создания: {createTime}
+              </span>
+            </div>
+            {description !== "" && (
+              <button
+                className={
+                  isShow
+                    ? `${styles.btn} ${styles.btn_desc} ${styles.rotate} `
+                    : `${styles.btn} ${styles.btn_desc} `
+                }
+                onClick={showDescription}
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M8 11.89l-1.414-1.415-4.95-4.95L3.05 4.111 8 9.06l4.95-4.95 1.414 1.414-4.95 4.95L8 11.889z"
+                    fill="#000"
+                  ></path>
+                </svg>
+              </button>
+            )}
+            <span className={`${styles.time} ${styles.time_deadline}`}>
+              до {deadlineTime}
+            </span>
+          </div>
+        )}
+        <button
+          className={`${styles.btn} ${styles.btn_edit}`}
+          onClick={editTask}
+        >
           <svg
             width="24"
             height="24"
@@ -62,6 +140,23 @@ export const TodoItem = ({ item, changeStatus, deleteTask }) => {
             ></path>
           </svg>
         </button>
+        {isEdit && (
+          <button className={`${styles.btn}`} onClick={saveTask}>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M8 11.89l-1.414-1.415-4.95-4.95L3.05 4.111 8 9.06l4.95-4.95 1.414 1.414-4.95 4.95L8 11.889z"
+                fill="green"
+              ></path>
+            </svg>
+          </button>
+        )}
         <button
           className={`${styles.btn} ${styles.btn_del}`}
           onClick={() => deleteTask(id)}
@@ -81,7 +176,7 @@ export const TodoItem = ({ item, changeStatus, deleteTask }) => {
           </svg>
         </button>
       </div>
-      {isShow && <p className={styles.description}>{description}</p>}
+      {isShow && !isEdit && <p className={styles.description}>{description}</p>}
     </li>
   );
 };

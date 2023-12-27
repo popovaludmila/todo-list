@@ -13,41 +13,51 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 10px;
 }
 
-.name_wrap {
+.checkbox_wrapper {
   position: relative;
-  padding-left: 50px;
+  display: flex;
+  align-self: flex-start;
+  width: 30px;
+  height: 30px;
+}
+
+.checkbox {
+  appearance: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #222;
+  border-radius: 3px;
+}
+
+.checkbox:checked::before {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  content: url("../../images/checkmark.svg");
+}
+
+.name_wrap {
+  display: flex;
+  flex-direction: column;
+  padding-left: 30px;
 }
 
 .info {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
   flex-grow: 1;
-}
-
-.name_wrap::before {
-  position: absolute;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  background-color: transparent;
-  border-radius: 6px;
-  border: 1px solid #000;
-  top: 0;
-  left: 0;
-  content: "";
-  cursor: pointer;
-}
-
-.checkbox:checked + .name_wrap::before {
-  content: url("../../images/checkmark.svg");
 }
 
 .name {
@@ -55,11 +65,13 @@
   word-break: break-all;
   font-size: 20px;
   line-height: 20px;
-  padding-bottom: 5px;
+  margin-bottom: 5px;
 }
 
+.through {
+  text-decoration: line-through;
+}
 .time {
-  margin-right: 10px;
   color: dimgrey;
   font-size: 10px;
 }
@@ -81,7 +93,7 @@
 }
 
 .btn_del svg path {
-  transition: .2s;
+  transition: 0.2s;
 }
 .btn_del:hover svg path,
 .btn_del:focus svg path {
@@ -89,7 +101,7 @@
 }
 
 .btn_edit svg path {
-  transition: .2s;
+  transition: 0.2s;
 }
 .btn_edit:hover svg path,
 .btn_edit:focus svg path {
@@ -99,20 +111,30 @@
 .btn_desc {
   width: 24px;
   height: 24px;
-  align-items:flex-start;
+  align-items: flex-start;
   align-self: flex-start;
 }
 
 .description {
-  margin-left: 50px;
-  margin-right: 90px;
+  margin-left: 60px;
+  margin-right: 85px;
   padding-top: 10px;
   border-top: 1px solid #222;
   font-style: italic;
   font-size: 18px;
   color: rgb(94, 94, 94);
   word-wrap: break-word;
- word-break: break-all;
+  word-break: break-all;
+}
+
+.description_wrap {
+  margin-left: 30px;
+  margin-right: 0;
+  margin-top: 10px;
+  width: 100%;
+  resize: none;
+  padding-top: 0;
+  padding: 3px;
 }
 
 .rotate {
