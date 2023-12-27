@@ -46,7 +46,7 @@ export const TodoItem = ({ item, changeStatus, deleteTask, updateTask }) => {
           <form className={styles.info}>
             <div className={styles.name_wrap}>
               <input
-                className={`${styles.name}`}
+                className={`${styles.name} ${styles.name_input}`}
                 value={form.name}
                 type="text"
                 name="name"
@@ -57,14 +57,15 @@ export const TodoItem = ({ item, changeStatus, deleteTask, updateTask }) => {
               </span>
             </div>
             <span className={`${styles.time} ${styles.time_deadline}`}>
-              до &nbsp;{" "}
-            </span>
+              до &nbsp;
+          
             <input
               type="text"
               name="deadlineTime"
               onChange={onChange}
               value={form.deadlineTime}
             />
+              </span>
             {description !== "" && (
               <textarea
                 rows={1}

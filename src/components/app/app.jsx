@@ -3,6 +3,7 @@ import { Header } from "../header/header";
 import styles from "./app.module.css";
 import { TodoItem } from "../todo-item/todo-item";
 import { v4 as uuidv4 } from "uuid";
+import { Sort } from "../sort/sort";
 
 export const App = () => {
   const [todos, setTodos] = useState(
@@ -52,25 +53,33 @@ export const App = () => {
     });
   };
 
+  const [sortField, setSortField] = useState("timestampCreateTime");
+
   return (
     <div className="container">
       <div className={styles.inner}>
         <h1 className={styles.title}>Планировщик задач</h1>
 
         <Header addTodo={addTodo} />
+        <Sort
+          sortDeadlineTimes={() => setSortField("timestampDeadlineTime")}
+          sortCreateTimes={() => setSortField("timestampCreateTime")}
+        />
         <div className={styles.todos_wrapper}>
           <ul className={styles.list}>
-            {todos.map((todo) => {
-              return (
-                <TodoItem
-                  item={todo}
-                  key={uuidv4()}
-                  changeStatus={changeStatus}
-                  deleteTask={deleteItem}
-                  updateTask={updateTask}
-                />
-              );
-            })}
+            {todos
+              .sort((a, b) => a[sortField] - b[sortField])
+              .map((todo) => {
+                return (
+                  <TodoItem
+                    item={todo}
+                    key={uuidv4()}
+                    changeStatus={changeStatus}
+                    deleteTask={deleteItem}
+                    updateTask={updateTask}
+                  />
+                );
+              })}
           </ul>
         </div>
       </div>
