@@ -33,6 +33,14 @@
 .name, .textarea {
   width: 100%;
 }
+
+.notific {
+  align-self: flex-start;
+}
+
+.star {
+  color: red;
+}
 .label {
   padding-bottom: 12px;
   font-size: 20px;
@@ -52,7 +60,7 @@
 
 .input:not(.input_textarea):hover,
 .input:not(.input_textarea):focus{
-    border-bottom: 2px solid violet;
+    border-bottom: 2px solid green;
 }
 .input_name {
   padding-left: 5px;
@@ -70,13 +78,13 @@
 
 .input_textarea:hover,
 .input_textarea:focus {
-  border: 2px solid violet;
+  border: 2px solid rgb(26, 163, 26);
 }
 
 .btn {
     padding: 12px 15px;
     min-width: 150px;
-    background-color: green;
+    background-color: rgb(26, 163, 26);
     color:#fff;
     font-size: 20px;
     font-weight: 700;

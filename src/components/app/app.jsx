@@ -6,12 +6,27 @@ import { v4 as uuidv4 } from "uuid";
 import { Sort } from "../sort/sort";
 
 export const App = () => {
+    Notification.requestPermission();
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .catch((error)=> {
+            console.error('Ошибка регистрации Service Worker:', error);
+          })
+      }
+
   const [todos, setTodos] = useState(
     JSON.parse(localStorage.getItem("todos")) || []
   );
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
+
+    navigator.serviceWorker
+      .ready
+      .then((r) => r.active.postMessage(todos));
+
   }, [todos]);
 
   const addTodo = (todo) => {
@@ -59,7 +74,7 @@ export const App = () => {
     <div className="container">
       <div className={styles.inner}>
         <h1 className={styles.title}>Планировщик задач</h1>
-
+        <button id='subscriptionButton' disabled={true}></button>
         <Header addTodo={addTodo} />
         <Sort
           sortDeadlineTimes={() => setSortField("timestampDeadlineTime")}

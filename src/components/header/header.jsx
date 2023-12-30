@@ -49,7 +49,7 @@ export const Header = ({ addTodo }) => {
 
       resetValue();
     } else {
-      console.log("Заполните данные");
+      alert("Заполните поля для обязательного заполнения");
     }
   };
 
@@ -57,7 +57,7 @@ export const Header = ({ addTodo }) => {
     <form className={styles.form}>
       <div className={styles.row}>
         <div className={`${styles.item} ${styles.name}`}>
-          <label className={styles.label}>Название задачи</label>
+          <label className={styles.label}>Название задачи <span className={styles.star}>*</span></label>
           <input
             className={`${styles.input} ${styles.input_name}`}
             type="text"
@@ -69,7 +69,7 @@ export const Header = ({ addTodo }) => {
         </div>
 
         <div className={styles.item}>
-          <label className={styles.label}>Сроки выполнения</label>
+          <label className={styles.label}>Сроки выполнения <span className={styles.star}>*</span></label>
           <div className={styles.deadlines}>
             <input
               name="time"
@@ -99,6 +99,7 @@ export const Header = ({ addTodo }) => {
           className={`${styles.input} ${styles.input_textarea}`}
         ></textarea>
       </div>
+      <p className={styles.notific}><span className={styles.star}>*</span> - поле для обязательного заполнения</p>
       <button onClick={saveItem} type="button" className={styles.btn}>
         Добавить задачу
       </button>
